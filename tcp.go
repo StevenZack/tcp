@@ -16,6 +16,7 @@ func main() {
 		fmt.Println(`resolve error :`, e)
 		return
 	}
+	fmt.Println("listened on localhost:8080")
 	l, e := net.ListenTCP("tcp", addr)
 	if e != nil {
 		fmt.Println(`listen error :`, e)
