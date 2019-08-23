@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -42,6 +43,14 @@ func handleCon(c net.Conn) {
 	}
 	fmt.Println("\n\n")
 	fmt.Println(string(b[:n]))
+	n, e = c.Read(b)
+	if e != nil {
+		fmt.Println(" error :", e)
+		return
+	}
+	str := string(b[:n])
+	fmt.Println(str)
+	fmt.Println(strings.HasSuffix(str, "\r\n\r\n"))
 	fmt.Println("------------------------------------------------")
 	backData := "HTTP/1.1 200 OK\r\nContent-Length: " + fmt.Sprint(n) + "\r\n\r\n" + string(b[:n]) + "\r\n\r\n"
 	fmt.Fprint(c, backData)
