@@ -12,6 +12,7 @@ import (
 var port = flag.String("p", ":8080", "port")
 
 func main() {
+	flag.Parse()
 	addr, e := net.ResolveTCPAddr("tcp", *port)
 	if e != nil {
 		fmt.Println(`resolve error :`, e)
