@@ -1,25 +1,23 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
-	"os"
 	"strings"
 
 	"github.com/StevenZack/tools/strToolkit"
 )
 
+var port = flag.String("p", ":8080", "port")
+
 func main() {
-	port := ":8080"
-	if len(os.Args) > 1 {
-		port = os.Args[1]
-	}
-	addr, e := net.ResolveTCPAddr("tcp", port)
+	addr, e := net.ResolveTCPAddr("tcp", *port)
 	if e != nil {
 		fmt.Println(`resolve error :`, e)
 		return
 	}
-	fmt.Println("listened on localhost:8080")
+	fmt.Println("listened on localhost" + *port)
 	l, e := net.ListenTCP("tcp", addr)
 	if e != nil {
 		fmt.Println(`listen error :`, e)
@@ -45,11 +43,6 @@ func handleCon(c net.Conn) {
 	}
 	fmt.Println("\n\n")
 	fmt.Println(strToolkit.JsonObject(string(b[:n])))
-	n, e = c.Read(b)
-	if e != nil {
-		fmt.Println(" error :", e)
-		return
-	}
 	str := string(b[:n])
 	fmt.Println(strToolkit.JsonObject(str))
 	fmt.Println(strings.HasSuffix(str, "\r\n\r\n"))
